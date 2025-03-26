@@ -16,10 +16,15 @@ public class Professor extends Pessoa {
         this.salario = salario;
     }
 
+    @Override
     public void exibirDetalhes(){
         System.out.println("Nome: " + this.nome);
         System.out.println("Idade: " + this.idade);
         System.out.println("Especialidade: "+ this.especialidade);
+    }
+
+    public String getEspecialidade(){
+        return this.especialidade;
     }
 
 }

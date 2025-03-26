@@ -17,10 +17,13 @@ public class Aluno extends Pessoa {
         this.matricula = matricula;
     }
 
+    @Override
     public void exibirDetalhes(){
         System.out.println("Nome: " + this.nome);
         System.out.println("Idade: " + this.idade);
         System.out.println("Matrícula: "+ this.matricula);
+        System.out.println("Cursos Matriculados: ");
+        cursosMat.stream().forEach(curso-> System.out.println(curso.nome));
     }
 
     public void matricularEmCurso(Curso curso){
