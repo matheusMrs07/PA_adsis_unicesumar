@@ -1,5 +1,7 @@
 
 public class Moto extends Veiculo implements Combustivel{
+
+    public double qtd_combustivel;
  
     public Moto(String marca, String modelo, int ano){
         super(marca, modelo, ano);
@@ -19,7 +21,8 @@ public class Moto extends Veiculo implements Combustivel{
     }
     
     @Override
-    public void abastecer(){
+    public void abastecer(double qtd){
         System.out.println("Colocando gasolina");
+        qtd_combustivel += qtd;
     }
 }

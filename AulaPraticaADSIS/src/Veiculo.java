@@ -1,3 +1,5 @@
+import custom.exceptions.SemCumbustivelException;
+
 public abstract class Veiculo {
 
     String marca;
@@ -29,7 +31,7 @@ public abstract class Veiculo {
         System.out.println("Ano: "+ ano);
     }
 
-    abstract void acelerar();
+    abstract void acelerar() throws SemCumbustivelException;
 
     
 

@@ -1,4 +1,6 @@
 
+import custom.exceptions.ItemNaoEncontradoException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.Curso;
 import model.Professor;
@@ -11,6 +13,7 @@ public class App {
         GestorAcademico gestorAcademico = new GestorAcademico();
 
         while (true) {
+            try{
             System.out.println("=== Menu ===");
             System.out.println("1. Listar Alunos");
             System.out.println("2. Listar Cursos");
@@ -22,41 +25,31 @@ public class App {
             System.out.print("Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir a quebra de linha
-
+            
             switch (opcao) {
-                case 1:
-                    gestorAcademico.listarAlunos();
-                    break;
-                case 2:
-                    gestorAcademico.listarCursos();
-                    break;
-
-                case 3:
-                    gestorAcademico.listarProfessores();
-                    break;
-                
-                case 4:
+                case 1 -> gestorAcademico.listarAlunos();
+                case 2 -> gestorAcademico.listarCursos();
+                case 3 -> gestorAcademico.listarProfessores();
+                case 4 -> {
                     System.out.println("Cadastro de Aluno");
                     System.out.print("Nome: ");
                     String nome = scanner.nextLine();
-                    System.out.println("CPF: ");
+                    System.out.print("CPF: ");
                     String cpf = scanner.nextLine();
-                    System.out.println("Idade: ");
+                    System.out.print("Idade: ");
                     int idade = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.println("RA: ");
+                    System.out.print("RA: ");
                     String matricula = scanner.nextLine();
 
-                    System.out.println("Código do curso: ");
+                    System.out.print("Código do curso: ");
                     String cod_curso = scanner.nextLine();
 
                     gestorAcademico.adicionarAluno(nome, cpf, idade, matricula);
 
                     gestorAcademico.matricularAlunoCurso(matricula, cod_curso);
-
-                    break;
-
-                case 5:
+                }
+                case 5 -> {
                     System.out.print("Nome do Curso: ");
                     String nomeCurso = scanner.nextLine();
                     System.out.print("Carga Horária: ");
@@ -66,8 +59,8 @@ public class App {
                     String codigoCurso = scanner.nextLine();
                     Curso novoCurso = new Curso(nomeCurso, cargaHoraria, codigoCurso);
                     gestorAcademico.adicionarCurso(novoCurso);
-                    break;
-                case 6:
+                }
+                case 6 -> {
                     System.out.print("Nome do Professor: ");
                     String nomeProfessor = scanner.nextLine();
                     System.out.print("CPF do Professor: ");
@@ -84,15 +77,22 @@ public class App {
                     scanner.nextLine(); // Consumir a quebra de linha
                     Professor novoProfessor = new Professor(nomeProfessor, cpfProfessor, idadeProfessor, matriculaProfessor, especialidade, salario);
                     gestorAcademico.adicionarProfessor(novoProfessor);
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Saindo...");
                     scanner.close();
                     return;
-                
-                default:
-                    throw new AssertionError();
+                }
+                default -> throw new AssertionError();
             }
+        } catch(InputMismatchException e){
+            System.out.println("Erro no cadastro! Valor inválido, tente novamente.");
+            scanner.nextLine(); // Consumir a quebra de linha
+        } catch(ItemNaoEncontradoException e){
+            System.out.println( e.getMessage());
+            System.out.println("Tente Novamente!");
+            scanner.nextLine();
+        }
 
         }
         

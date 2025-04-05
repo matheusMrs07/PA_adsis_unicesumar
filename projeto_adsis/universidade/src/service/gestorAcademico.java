@@ -1,4 +1,5 @@
 package service;
+import custom.exceptions.ItemNaoEncontradoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,32 +39,28 @@ public class GestorAcademico {
         cursos.put(c.getCodigo(), c);
     }
 
-    public void matricularAlunoCurso(Aluno a, Curso c){
+    public void matricularAlunoCurso(Aluno a, Curso c) throws ItemNaoEncontradoException{
         Aluno aluno = this.alunos.get(a.getMatricula());
         if(aluno == null){
-            System.out.println("Aluno não encontrado");
-            return;
+            throw new ItemNaoEncontradoException("Aluno não encontrado");
         }
         Curso curso = this.cursos.get(c.getCodigo());
         if(curso == null){
-            System.out.println("Curso não encontrado");
-            return;
+            throw new ItemNaoEncontradoException("Curso não encontrado");
         }
 
         aluno.matricularEmCurso(curso);
         alunos.put(aluno.getMatricula(), aluno);
     }
 
-    public void matricularAlunoCurso(String ra_aluno, String cod_curso){
+    public void matricularAlunoCurso(String ra_aluno, String cod_curso) throws ItemNaoEncontradoException{
         Aluno aluno = this.alunos.get(ra_aluno);
         if(aluno == null){
-            System.out.println("Aluno não encontrado");
-            return;
+            throw new ItemNaoEncontradoException("Aluno não encontrado");
         }
         Curso curso = this.cursos.get(cod_curso);
         if(curso == null){
-            System.out.println("Curso não encontrado");
-            return;
+            throw new ItemNaoEncontradoException("Curso não encontrado");
         }
 
         aluno.matricularEmCurso(curso);
