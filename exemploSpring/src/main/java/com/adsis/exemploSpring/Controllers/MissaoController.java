@@ -13,39 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.adsis.exemploSpring.DTOs.NinjaDTO;
-import com.adsis.exemploSpring.services.NinjaService;
+import com.adsis.exemploSpring.DTOs.MissaoDTO;
+import com.adsis.exemploSpring.services.MissaoService;
 
 @RestController
-@RequestMapping("/ninjas")
-public class NinjaController {
+@RequestMapping("/missoes")
+public class MissaoController {
 
     @Autowired
-    NinjaService ninjaService;
+    private MissaoService missaoService;
 
     @GetMapping
-    public List<NinjaDTO> listar() {
-        return ninjaService.listar();
+    public List<MissaoDTO> listar() {
+        return missaoService.listar();
     }
 
     @PostMapping
-    public NinjaDTO criarNinja(@RequestBody NinjaDTO ninja) {
-        return ninjaService.salvar(ninja);
+    public MissaoDTO criar(@RequestBody MissaoDTO missao) {
+        return missaoService.salvar(missao);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<NinjaDTO> buscarPorId(@PathVariable Long id) {
-        return ninjaService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<MissaoDTO> buscarPorId(@PathVariable Long id) {
+        return missaoService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public NinjaDTO editar(@PathVariable Long id, @RequestBody NinjaDTO ninja) {
-        return ninjaService.salvar(id, ninja);
+    public MissaoDTO editar(@PathVariable Long id, @RequestBody MissaoDTO entity) {
+        return missaoService.salvar(id, entity);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deletar(@PathVariable Long id) {
-        ninjaService.deletar(id);
+        missaoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
 }

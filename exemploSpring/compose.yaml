@@ -1,8 +1,13 @@
 services:
   adsis_db:
-    image: 'mysql:latest'
+    image: "mysql:latest"
     environment:
-      - 'MYSQL_DATABASE=adsis_db'
-      - 'MYSQL_ROOT_PASSWORD=root'
+      - "MYSQL_DATABASE=adsis_db"
+      - "MYSQL_ROOT_PASSWORD=root"
     ports:
-      - '3307:3306'
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
