@@ -35,7 +35,7 @@ public class NinjaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<NinjaDTO> buscarPorId(@PathVariable Long id) {
-        return ninjaService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(ninjaService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
@@ -44,7 +44,7 @@ public class NinjaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletar(@PathVariable Long id) {
+    public ResponseEntity<Object> deletar(@PathVariable Long id) {
         ninjaService.deletar(id);
         return ResponseEntity.noContent().build();
     }

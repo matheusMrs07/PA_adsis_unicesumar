@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.adsis.exemploSpring.DTOs.NinjaDTO;
+import com.adsis.exemploSpring.Exceptions.NaoEncontradoException;
 import com.adsis.exemploSpring.models.Ninja;
 import com.adsis.exemploSpring.repositories.MissaoRepository;
 import com.adsis.exemploSpring.repositories.NinjaRepository;
@@ -30,6 +31,8 @@ public class NinjaService {
     }
 
     public NinjaDTO salvar(Long id, NinjaDTO ninja) {
+        ninjaRepository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Ninja nao foi encontrado!"));
         Ninja ninjaEntity = new Ninja(ninja);
         ninjaEntity.setId(id);
         ninjaEntity.setMissao(missaoRepository.findById(ninja.missaoId()).orElse(null));
@@ -45,11 +48,15 @@ public class NinjaService {
         return ninjaRepository.findByNomeContainingIgnoreCase(nome).stream().map(ninja -> new NinjaDTO(ninja)).toList();
     }
 
-    public Optional<NinjaDTO> buscarPorId(Long id) {
-        return ninjaRepository.findById(id).map(ninja -> new NinjaDTO(ninja));
+    public NinjaDTO buscarPorId(Long id) {
+        return ninjaRepository.findById(id).map(ninja -> new NinjaDTO(ninja)).orElseThrow(
+                () -> new NaoEncontradoException("Ninja nao foi encontrado!"));
     }
 
     public void deletar(Long id) {
+        ninjaRepository.findById(id)
+                .orElseThrow(
+                        () -> new NaoEncontradoException("Ninja nao foi encontrado!"));
         ninjaRepository.deleteById(id);
     }
 

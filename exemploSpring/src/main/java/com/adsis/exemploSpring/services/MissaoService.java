@@ -1,15 +1,17 @@
 package com.adsis.exemploSpring.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.adsis.exemploSpring.DTOs.MissaoDTO;
+import com.adsis.exemploSpring.Exceptions.NaoEncontradoException;
 import com.adsis.exemploSpring.models.Missao;
 import com.adsis.exemploSpring.models.Ninja;
 import com.adsis.exemploSpring.repositories.MissaoRepository;
 import com.adsis.exemploSpring.repositories.NinjaRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class MissaoService {
@@ -41,6 +43,9 @@ public class MissaoService {
     }
 
     public MissaoDTO salvar(Long id, MissaoDTO missaoDTO) {
+        missaoRepository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Missao com id " + id + " nao encontrada"));
+
         Missao missaoEntity = new Missao(missaoDTO);
         missaoEntity.setId(id);
 
@@ -57,11 +62,25 @@ public class MissaoService {
         return new MissaoDTO(missaoRepository.save(missaoEntity));
     }
 
-    public Optional<MissaoDTO> buscarPorId(Long id) {
-        return missaoRepository.findById(id).map(missao -> new MissaoDTO(missao));
+    public MissaoDTO buscarPorId(Long id) {
+        return missaoRepository.findById(id).map(missao -> new MissaoDTO(missao))
+                .orElseThrow(() -> new NaoEncontradoException("Missao com id <" + id + "> não encontrado!"));
     }
 
+    @Transactional
     public void deletar(Long id) {
+        missaoRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new NaoEncontradoException("Missao com id <" + id + "> não encontrado!"))
+                .getNinjas()
+                .stream()
+                .forEach(ninja -> {
+                    ninja.setMissao(null);
+                    ninjaRepository.save(ninja);
+                });
+
         missaoRepository.deleteById(id);
+
     }
 }
